@@ -30,6 +30,7 @@ searchStep.stepSearchProduct(nameProduct);
     public void выставлемВФильтреМаксимальнуюЦену(String nameMaxPrice) throws InterruptedException {
         searchStep.stepMaxPrice(nameMaxPrice);
 
+
     }
 
     @Когда("^добавляем в корзину первые \"([^\"]*)\" \"([^\"]*)\" товаров$")

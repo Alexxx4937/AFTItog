@@ -17,6 +17,7 @@ public class SearchStep {
     @Step("выставлена максимальная цена товара {0}")
     public void stepMaxPrice(String nameMaxPrice) throws InterruptedException {
         searchPage.setMaxPrice(nameMaxPrice);
+        Thread.sleep(1000);
     }
     @Step("выбиран чекбокс {0}")
     public void stepCheckBox(String nameCheckBox) throws InterruptedException {
