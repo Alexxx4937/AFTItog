@@ -3,6 +3,9 @@ package autotest.steps;
 import cucumber.api.PendingException;
 import cucumber.api.java.it.Ma;
 import cucumber.api.java.ru.Когда;
+import cucumber.api.java.ru.Тогда;
+
+import java.io.IOException;
 
 public class ScenarioStep {
     MainStep mainStep=new MainStep();
@@ -36,12 +39,8 @@ searchStep.stepSearchProduct(nameProduct);
 
     }
 
-   /* @Когда("^выбираем в фильтре брэнд \"([^\"]*)\"$")
-    public void выбираемВФильтреБрэндИ(String nameBrand1) throws InterruptedException {
-        searchStep.stepBrandFilter(nameBrand1);
 
 
-    }*/
 
     @Когда("^удаляем все товары из корзины$")
     public void удаляемВсеТоварыИзКорзины() {
@@ -62,5 +61,21 @@ searchStep.stepSearchProduct(nameProduct);
     public void выбираемЧекбоксБренда(String nameBrand) throws InterruptedException {
         searchStep.stepCheckBoxBrand(nameBrand);
 
+    }
+
+    @Тогда("^проверяем что корзина пуста$")
+    public void проверяемЧтоКорзинаПуста() {
+cartStep.stepCheckCartEmpty();
+    }
+
+    @Тогда("^проверяем что все добавленные товары находятся в корзине$")
+    public void проверяемЧтоВсеДобавленныеТоварыНаходятсяВКорзине() {
+        cartStep.stepCheckProductCart();
+
+    }
+
+    @Тогда("^прикладываем файл с информацией о товарах$")
+    public void прикладываемФайлСИнформациейОТоварах() throws IOException {
+        searchStep.stepProductFile();
     }
 }

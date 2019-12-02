@@ -8,36 +8,32 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.qatools.allure.annotations.Attachment;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 public class SearchPage extends BasePage {
 
-    @FindBy(xpath = "//div[contains(@class,'widget-search-result-container')]//button[@data-test-id]")
-    List<WebElement> addCart;
-
-    @FindBy(xpath = "//a[@class='tile-wrapper']")
-    List<WebElement> productCollectoin;
+    @FindBy(xpath = "//div[@class='z2']//div[@class='tile m-list m-border']")
+    List<WebElement> productCollection;
 
 
     @FindBy(xpath = "//input[@placeholder='Искать на Ozon']")
     WebElement search;
 
 
-
     @FindBy(xpath = "//form//input[@class and contains(@id,'to')]")
     WebElement maxPrice;
 
 
-    @FindBy(xpath = "//div[@class='five-dots']")
-    WebElement pageLoad;
-
-
     @FindBy(xpath = "//span[@data-test-id='filter-block-brand-show-all']")
     WebElement brandAll;
-    @FindBy(xpath = "//a[@class='tile-wrapper']//div[contains(text(),'В корзину')]")
-    WebElement addCarts;
-
 
 
     public void setSearch(String nameProduct) {
@@ -52,78 +48,90 @@ public class SearchPage extends BasePage {
     }
 
 
-    public void setCheckBox(String nameCheckBox) {
+    public void setCheckBox(String nameCheckBox) throws InterruptedException {
+        Thread.sleep(2000);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();"
                 , driver.findElement(By.xpath("//span[contains(text(), '" + nameCheckBox + "')]")));
+
         driver.findElement(By.xpath("//label//span[contains(text(), '" + nameCheckBox + "')]")).click();
     }
 
     public void setCheckBoxBrand(String nameCheckBoxBrand) throws InterruptedException {
-        if (brandAll.isDisplayed()) {
-            wait.until(ExpectedConditions.elementToBeClickable(brandAll)).click();
+
+
+
+        try {
+            ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);",brandAll);
+            brandAll.click();
+            Thread.sleep(1000);
+
+        } catch (Exception e) {
         }
-        Thread.sleep(1000);
         setCheckBox(nameCheckBoxBrand);
+
     }
 
 
-
-
-    public void waitLoad() {
-
-        wait.until(ExpectedConditions.stalenessOf(pageLoad));
-    }
-
-    private void waitAndClick(int i) {
-
-
-        click(driver.findElement(By.xpath("(//div[contains(text(), 'В корзину')])[" + i + "]")));
-    }
-
-
-    public void addToBasket(String count, String string){
-        for (WebElement item:productCollectoin
-             ) {if(item.findElement(By.xpath("(.//div[contains(text(),'В корзину')])["+1+"]")).isEnabled()){
-
-        }
-
-        }
-    }
-
-
-    /*public void addToBasket(String count, String string) {
+    public void addToBasket(String count, String string) {
         int i = 1;
-
-
-
         int countLocal = Integer.parseInt(count);
+        Map<String, String> selectProduct = BasePage.getProductMap();
+        for (WebElement item : productCollection) {
 
-        switch (string){
-            case ("четных"):
-
-                while (countLocal > 0) {
-                    if (i % 2 == 0) {
-
-                        waitAndClick(i);
-                        countLocal--;
+            switch (string) {
+                case ("четных"):
+                    if (i % 2 == 0 && i <= countLocal * 2) {
+                        String name = item.findElement(By.xpath(".//span[@data-test-id='tile-name']")).getText();
+                        String price = item.findElement(By.xpath(".//span[@data-test-id='tile-price']")).getText();
+                        selectProduct.put(name, price);
+                        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", item.findElement(By.xpath(".//button[@data-test-id='tile-buy-button']")));
+                        item.findElement(By.xpath(".//button[@data-test-id='tile-buy-button']")).click();
                     }
                     i++;
-                }
-                break;
+                    break;
+                case ("нечетных"):
+                    if (i % 2 != 0 && i <= countLocal * 2) {
+                        String name = item.findElement(By.xpath(".//span[@data-test-id='tile-name']")).getText();
+                        String price = item.findElement(By.xpath(".//span[@data-test-id='tile-price']")).getText();
+                        selectProduct.put(name, price);
+                        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", item.findElement(By.xpath(".//button[@data-test-id='tile-buy-button']")));
+                        item.findElement(By.xpath(".//button[@data-test-id='tile-buy-button']")).click();
 
-            case ("нечетных"):
-                while (countLocal > 0) {
-                    if (i %2 !=0) {
-                        waitAndClick(i);
-                        countLocal--;
                     }
                     i++;
-                }
-                break;
-        }}*/
-
+                    break;
+            }
+        }
 
 
     }
+    @Attachment
+    public static byte[] getBytes(String resourceName) throws IOException {
+        return Files.readAllBytes(Paths.get("", resourceName));
+    }
+
+
+    public void productFile() throws IOException {
+
+        Map<String, String> product = BasePage.getProductMap();
+        File file = new File("product.txt");
+
+        for (int i = 1; file.exists(); i++) {
+            file = new File(String.format("product%d.txt", i));
+        }
+        try (FileWriter writer = new FileWriter(file)) {
+            for (Map.Entry<String, String> entry : product.entrySet()) {
+                writer.write(entry.getKey() + " : " + entry.getValue().replaceAll("\\D", "") + " руб" + System.lineSeparator());
+            }
+            writer.flush();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        getBytes(file.getName());
+        file.delete();
+
+    }
+}
 
 

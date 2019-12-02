@@ -9,10 +9,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BasePage {
 
         WebDriver driver = BaseStep.getDriver();
     Wait<WebDriver> wait = new WebDriverWait(driver, 15);
+    private static Map<String, String> productMap = new HashMap<>();
 
         public BasePage(){
             PageFactory.initElements(driver, this);
@@ -40,13 +44,14 @@ public class BasePage {
 
     }
 
+
+    public static Map<String, String> getProductMap() {
+        return productMap;
+    }
+
     public void click(WebElement element)  {
 
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", element);
-  /*      Wait<WebDriver> wait = new WebDriverWait(driver, 15);
-        Actions actions = new Actions(driver);
-        actions.moveToElement(element);
-        wait.until(ExpectedConditions.elementToBeClickable(element));*/
         element.click();
 
 

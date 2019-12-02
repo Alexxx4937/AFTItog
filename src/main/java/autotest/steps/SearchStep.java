@@ -4,6 +4,8 @@ import autotest.pages.BasePage;
 import autotest.pages.SearchPage;
 import ru.yandex.qatools.allure.annotations.Step;
 
+import java.io.IOException;
+
 public class SearchStep {
     SearchPage searchPage=new SearchPage();
 
@@ -12,13 +14,14 @@ public class SearchStep {
         searchPage.setSearch(nameProduct);
     }
 
-    @Step("выставляем максимальную цену {0}")
+    @Step("выставлена максимальная цена товара {0}")
     public void stepMaxPrice(String nameMaxPrice) throws InterruptedException {
         searchPage.setMaxPrice(nameMaxPrice);
     }
-    @Step("выбираем чекбокс {0}")
-    public void stepCheckBox(String nameCheckBox)  {
+    @Step("выбиран чекбокс {0}")
+    public void stepCheckBox(String nameCheckBox) throws InterruptedException {
         searchPage.setCheckBox(nameCheckBox);
+
 
     }
     @Step("выбираем чекбокс бренда {0}")
@@ -28,18 +31,17 @@ public class SearchStep {
     }
 
 
-
-    /* @Step("выбираем бренд {0}")
-    public void stepBrandFilter(String nameBrand1) throws InterruptedException {
-        searchPage.setBrand(nameBrand1);
-
-
-    }*/
-    @Step("добавляем в корзину первые {0} {1} товаров")
+    @Step("добавлены в корзину первые {0} {1} товаров")
     public void  stepAddCart(String number,String evenOrOdd) throws InterruptedException {
 
 
         searchPage.addToBasket(number,evenOrOdd);
+    }
+
+    @Step("в Allure отчет добавляет файл с информацией от товарах product.txt")
+    public void stepProductFile() throws IOException {
+
+       searchPage.productFile();
     }
 
 }

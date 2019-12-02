@@ -8,7 +8,7 @@ public class MainStep {
 
     MainPage mainPage=new MainPage();
 
-    @Step("Выбираем пункт меню {0}")
+    @Step("Выбиран пункт меню {0}")
     public void stepClickMenu(String nameMenu){
         mainPage.clickMenu(nameMenu);
     }
