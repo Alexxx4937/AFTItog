@@ -1,13 +1,12 @@
 package autotest.pages;
 
-import org.junit.Assert;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 import ru.yandex.qatools.allure.annotations.Attachment;
 
 import java.io.File;
@@ -35,6 +34,9 @@ public class SearchPage extends BasePage {
     @FindBy(xpath = "//span[@data-test-id='filter-block-brand-show-all']")
     WebElement brandAll;
 
+
+    @FindBy(xpath ="//div[@class='five-dots']")
+    WebElement pageLoad;
 
     public void setSearch(String nameProduct) {
         field(search, nameProduct);
@@ -73,6 +75,7 @@ public class SearchPage extends BasePage {
 
 
     public void addToBasket(String count, String string) {
+
         int i = 1;
         int countLocal = Integer.parseInt(count);
         Map<String, String> selectProduct = BasePage.getProductMap();
@@ -122,6 +125,7 @@ public class SearchPage extends BasePage {
         try (FileWriter writer = new FileWriter(file)) {
             for (Map.Entry<String, String> entry : product.entrySet()) {
                 writer.write(entry.getKey() + " : " + entry.getValue().replaceAll("\\D", "") + " руб" + System.lineSeparator());
+
             }
             writer.flush();
         } catch (IOException ex) {

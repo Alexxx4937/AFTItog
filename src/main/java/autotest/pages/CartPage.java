@@ -25,10 +25,13 @@ public class CartPage  extends BasePage{
     public WebElement confirmDeleteButton;
 
     @FindBy(xpath = "//div[contains(@class,'container')]//h1")
-    public WebElement isBasketEmpty;
+    public WebElement isCartEmpty;
 
     @FindBy(xpath = "//a[@class='a5c8']/span")
-    List<WebElement> productInCart;
+    public List<WebElement> productInCart;
+
+    @FindBy(xpath = "//div[contains(@class,'item_remove')]//div[contains(text(),'Корзина')]/..")
+    public  WebElement checkCart;
 
     public boolean checkProductCart() {
         Map<String, String> productCart = BasePage.getProductMap();
@@ -40,7 +43,11 @@ public class CartPage  extends BasePage{
         return true;
     }
 
+    public boolean checkCartTitle(String value) {
+        return checkCart.findElement(By.xpath("./div[1]")).getText().contains("Корзина")
+                && checkCart.findElement(By.xpath("./div[2]")).getText().contains(value);
 
+    }
 
     public void deleteAllProducts() {
         if (checkAll.isSelected()) {
@@ -50,9 +57,9 @@ public class CartPage  extends BasePage{
         click(confirmDeleteButton);}
 
     public void checkEmptyCart() {
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);",isBasketEmpty);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);",isCartEmpty);
         new WebDriverWait(BaseStep.getDriver(), 10)
                 .ignoring(NoSuchElementException.class)
-                .until(ExpectedConditions.visibilityOf(isBasketEmpty));
-        assertEquals("Корзина не пуста", "Корзина пуста",isBasketEmpty.getText());
+                .until(ExpectedConditions.visibilityOf(isCartEmpty));
+        assertEquals("Корзина не пуста", "Корзина пуста",isCartEmpty.getText());
 }}

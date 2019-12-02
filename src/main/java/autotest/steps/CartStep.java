@@ -13,6 +13,11 @@ public class CartStep {
         Assert.assertTrue(cartPage.checkProductCart());
     }
 
+    @Step("проверяем заголовок 'Корзина - {0}'")
+    public void stepCheckCartTitle(String value){
+        Assert.assertTrue(cartPage.checkCartTitle(value));
+    }
+
     @Step("проверяем что корзина пуста")
     public void stepCheckCartEmpty() {
 

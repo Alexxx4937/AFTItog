@@ -78,4 +78,12 @@ cartStep.stepCheckCartEmpty();
     public void прикладываемФайлСИнформациейОТоварах() throws IOException {
         searchStep.stepProductFile();
     }
+
+
+
+    @Тогда("^проверяем что отображается текст Корзина  - \"([^\"]*)\" товаров$")
+    public void проверяемЧтоОтображаетсяТекстКорзинаТоваров(String value)  {
+        cartStep.stepCheckCartTitle(value);
+
+    }
 }
