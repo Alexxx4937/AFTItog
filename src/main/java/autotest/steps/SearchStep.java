@@ -38,6 +38,12 @@ public class SearchStep {
 
         searchPage.addToBasket(number,evenOrOdd);
     }
+    @Step("добавлены в корзину первые {0} товаров")
+    public void  stepAddCart(String evenOrOdd) throws InterruptedException {
+
+
+        searchPage.addToBasket(evenOrOdd);
+    }
 
     @Step("в Allure отчет добавляет файл с информацией от товарах product.txt")
     public void stepProductFile() throws IOException {

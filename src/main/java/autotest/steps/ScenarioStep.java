@@ -87,4 +87,10 @@ cartStep.stepCheckCartEmpty();
         cartStep.stepCheckCartTitle(value);
 
     }
+
+    @Когда("^добавляем в корзину первые \"([^\"]*)\" товаров$")
+    public void добавляемВКорзинуПервыеТоваров(String nameProduct) throws InterruptedException {
+        searchStep.stepAddCart(nameProduct);
+
+    }
 }

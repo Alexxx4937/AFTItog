@@ -11,11 +11,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class BasePage {
 
         WebDriver driver = BaseStep.getDriver();
-    Wait<WebDriver> wait = new WebDriverWait(driver, 15);
+    Wait<WebDriver> wait = new WebDriverWait(driver, 5);
     private static Map<String, String> productMap = new HashMap<>();
 
         public BasePage(){
@@ -32,7 +33,7 @@ public class BasePage {
 
     }
     public void problemField(WebElement field, String value) throws InterruptedException {
-        Thread.sleep(1000);
+
          wait
                 .until(ExpectedConditions.elementToBeClickable(field)).click();
         String selectAll = Keys.chord(Keys.CONTROL, "a");
